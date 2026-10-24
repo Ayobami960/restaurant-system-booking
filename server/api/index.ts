@@ -4,7 +4,7 @@ let app: any;
 let loadError: unknown;
 
 try {
-  app = (await import("../src/server")).default;
+  app = (await import("../src/server.js")).default;
 } catch (e) {
   loadError = e;
   console.error("Startup crash:", e);

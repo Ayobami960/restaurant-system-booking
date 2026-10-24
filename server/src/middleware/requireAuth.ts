@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import { auth } from "../lib/auth";
-// import { allPermissons } from "../lib/permissions";
+import { auth } from "../lib/auth.js";
+// import { allPermissons } from "../lib/permissions.js";
 import { fromNodeHeaders } from "better-auth/node";
-import { activitiesLog } from "../lib/activities-log";
+import { activitiesLog } from "../lib/activities-log.js";
 
 /**
  * Simple Auth Middleware

@@ -3,10 +3,10 @@ import {
   deleteCategory,
   getCategories,
   updateCategory,
-} from "../controllers/category";
-import { checkRole } from "../middleware/checkRole";
-import { requireAuth } from "../middleware/requireAuth";
-import { requirePermission } from "../middleware/requirePermission";
+} from "../controllers/category.js";
+import { checkRole } from "../middleware/checkRole.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { requirePermission } from "../middleware/requirePermission.js";
 
 import express from "express";
 

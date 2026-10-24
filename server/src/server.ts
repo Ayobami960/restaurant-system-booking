@@ -13,22 +13,22 @@ import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { createServer } from "http";
 import { serve } from "inngest/express";
 
-import { auth } from "./lib/auth";
-import { prisma } from "./config/db";
-import categoryRouter from "./routes/category";
-import activitiesLogRouter from "./routes/activities-log";
-import menuItemRouter from "./routes/menu";
-import tableRouter from "./routes/table";
-import reservationRouter from "./routes/reservation";
-import orderRouter from "./routes/order";
-import dashboardRouter from "./routes/dashboard";
-import { edgeStoreHandler } from "./lib/edgestore";
-import { getIO, initSocket } from "./lib/socket";
-import { inngest } from "./inngest";
+import { auth } from "./lib/auth.js";
+import { prisma } from "./config/db.js";
+import categoryRouter from "./routes/category.js";
+import activitiesLogRouter from "./routes/activities-log.js";
+import menuItemRouter from "./routes/menu.js";
+import tableRouter from "./routes/table.js";
+import reservationRouter from "./routes/reservation.js";
+import orderRouter from "./routes/order.js";
+import dashboardRouter from "./routes/dashboard.js";
+import { edgeStoreHandler } from "./lib/edgestore.js";
+import { getIO, initSocket } from "./lib/socket.js";
+import { inngest } from "./inngest/index.js";
 import {
   aiMenuFeedbackAnalyzer,
   aiMenuItemGenerator,
-} from "./inngest/function";
+} from "./inngest/function.js";
 
 dotenv.config();
 

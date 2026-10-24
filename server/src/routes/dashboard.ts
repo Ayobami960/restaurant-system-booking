@@ -4,9 +4,9 @@ import {
   getDashboardCharts,
   getDashboardStats,
   getDashboardLists,
-} from "../controllers/dashboard";
-import { requireAuth } from "../middleware/requireAuth";
-import { checkRole } from "../middleware/checkRole";
+} from "../controllers/dashboard.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { checkRole } from "../middleware/checkRole.js";
 
 const dashboardRouter = express.Router();
 dashboardRouter.get(

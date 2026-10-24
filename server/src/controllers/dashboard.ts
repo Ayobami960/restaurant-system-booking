@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
-import { activitiesLog } from "../lib/activities-log";
+import { activitiesLog } from "../lib/activities-log.js";
 
 // I used ai for this based on the design of our dashboard => source code free
 export const getDashboardStats = async (req: Request, res: Response) => {

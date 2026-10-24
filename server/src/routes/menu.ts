@@ -1,4 +1,4 @@
-import { submitFeedback } from "../controllers/feedback";
+import { submitFeedback } from "../controllers/feedback.js";
 import {
   deleteMenuItem,
   getMenuItems,
@@ -7,12 +7,12 @@ import {
   getMenuItemById,
   generateMenuItem,
   smartMenu,
-} from "../controllers/menu";
-import { checkRole } from "../middleware/checkRole";
+} from "../controllers/menu.js";
+import { checkRole } from "../middleware/checkRole.js";
 
 import express from "express";
-import { requirePermission } from "../middleware/requirePermission";
-import { requireAuth } from "../middleware/requireAuth";
+import { requirePermission } from "../middleware/requirePermission.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 const menuItemRouter = express.Router();
 

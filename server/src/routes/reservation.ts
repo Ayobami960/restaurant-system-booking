@@ -3,10 +3,10 @@ import {
   createReservation,
   getReservations,
   updateReservationStatus,
-} from "../controllers/reservation";
-import { requireAuth } from "../middleware/requireAuth";
-import { requirePermission } from "../middleware/requirePermission";
-import { checkRole } from "../middleware/checkRole";
+} from "../controllers/reservation.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { requirePermission } from "../middleware/requirePermission.js";
+import { checkRole } from "../middleware/checkRole.js";
 
 const reservationRouter = express.Router();
 

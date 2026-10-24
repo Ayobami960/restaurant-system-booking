@@ -1,8 +1,8 @@
 import { inngest } from '.';
 
 import { NonRetriableError } from "inngest";
-import { getIO } from "../lib/socket";
-import { prisma } from "../lib/prisma";
+import { getIO } from "../lib/socket.js";
+import { prisma } from "../lib/prisma.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const aiActions = (action: string) => {

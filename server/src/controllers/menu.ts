@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 import { fromNodeHeaders } from "better-auth/node";
-import { auth } from "../lib/auth";
-import { activitiesLog } from "../lib/activities-log";
-import { getIO } from "../lib/socket";
-import { inngest } from "../inngest";
+import { auth } from "../lib/auth.js";
+import { activitiesLog } from "../lib/activities-log.js";
+import { getIO } from "../lib/socket.js";
+import { inngest } from "../inngest/index.js";
 
 // create
 export const createMenu = async (req: Request, res: Response) => {

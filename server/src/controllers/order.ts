@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
-import { activitiesLog } from "../lib/activities-log";
-import { getIO } from "../lib/socket";
-import { auth, stripeClient } from "../lib/auth";
+import { prisma } from "../lib/prisma.js";
+import { activitiesLog } from "../lib/activities-log.js";
+import { getIO } from "../lib/socket.js";
+import { auth, stripeClient } from "../lib/auth.js";
 import { fromNodeHeaders } from "better-auth/node";
 
 export interface itemsProps {

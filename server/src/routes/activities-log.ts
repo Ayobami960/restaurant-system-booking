@@ -1,8 +1,8 @@
 import express from "express";
 
-import { requireAuth } from "../middleware/requireAuth";
-import { activitiesLog } from "../lib/activities-log";
-import { getActivitiesLog } from "../controllers/activities-log";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { activitiesLog } from "../lib/activities-log.js";
+import { getActivitiesLog } from "../controllers/activities-log.js";
 
 const activitiesLogRouter = express.Router();
 

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
-import { activitiesLog } from "../lib/activities-log";
+import { prisma } from "../lib/prisma.js";
+import { activitiesLog } from "../lib/activities-log.js";
 
 // create category
 export const createCategory = async (req: Request, res: Response) => {

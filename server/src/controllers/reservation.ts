@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma";
-import { activitiesLog } from "../lib/activities-log";
-// import { getIO } from "../lib/socket";
+import { prisma } from "../lib/prisma.js";
+import { activitiesLog } from "../lib/activities-log.js";
+// import { getIO } from "../lib/socket.js";
 
 export const createReservation = async (req: Request, res: Response) => {
   try {

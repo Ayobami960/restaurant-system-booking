@@ -1,13 +1,13 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "./prisma";
+import { prisma } from "./prisma.js";
 import crypto from "crypto"
 import { admin } from "better-auth/plugins";
-import { ac, ADMIN, CUSTOMER, KITCHEN, MANAGER, STAFF } from "./permissions";
+import { ac, ADMIN, CUSTOMER, KITCHEN, MANAGER, STAFF } from "./permissions.js";
 import { stripe } from "@better-auth/stripe"
 import Stripe from "stripe"
-import type { itemsProps } from "../controllers/order";
-import { getIO } from "./socket";
+import type { itemsProps } from "../controllers/order.js";
+import { getIO } from "./socket.js";
 
 
 export const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
