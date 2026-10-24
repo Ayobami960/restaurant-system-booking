@@ -94,6 +94,10 @@ app.use(
   }),
 );
 
+app.get("/", (_req: Request, res: Response) => {
+  res.json({ status: "ok", name: "restaurant-system-booking-api" });
+});
+
 app.get("/version", (_req: Request, res: Response) => {
   res.json({ commit: process.env.VERCEL_GIT_COMMIT_SHA || "not-on-vercel" });
 });
