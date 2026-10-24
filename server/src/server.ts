@@ -3,11 +3,11 @@ import express, {
   type Application,
   type Request,
   type Response,
+  type NextFunction,
 } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
 import morgan from "morgan";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { createServer } from "http";
@@ -20,29 +20,34 @@ import activitiesLogRouter from "./routes/activities-log";
 import menuItemRouter from "./routes/menu";
 import tableRouter from "./routes/table";
 import reservationRouter from "./routes/reservation";
-import { edgeStoreHandler } from "./lib/edgestore";
 import orderRouter from "./routes/order";
+import dashboardRouter from "./routes/dashboard";
+import { edgeStoreHandler } from "./lib/edgestore";
 import { getIO, initSocket } from "./lib/socket";
 import { inngest } from "./inngest";
 import {
   aiMenuFeedbackAnalyzer,
   aiMenuItemGenerator,
 } from "./inngest/function";
-import dashboardRouter from "./routes/dashboard";
 
 dotenv.config();
+
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
-// Create HTTP Server
+
+
+const isVercel = !!process.env.VERCEL;
+
+
 const httpServer = createServer(app);
 
-//  Initialize Socket.IO globally 👈
-initSocket(httpServer);
+if (!isVercel) {
+  initSocket(httpServer);
+  // Make 'io' accessible via req.app.get("io")
+  app.set("io", getIO());
+}
 
-// Make 'io' accessible in Express req.app.get("io") for backwards compatibility
-app.set("io", getIO());
 
-// Middleware => security, parsing, etc.
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
@@ -55,21 +60,20 @@ app.use(
   }),
 );
 
-// better-auth
+// better-auth (must come BEFORE express.json())
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-// parsing
+// Parsing (express.json() replaces body-parser, no need for both)
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(bodyParser.json());
 
-// logging
+// Logging
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Routes
-// set the get and post routes for the edgestore router
+
 app.get("/edgestore/*splat", edgeStoreHandler);
 app.post("/edgestore/*splat", edgeStoreHandler);
 
@@ -80,6 +84,8 @@ app.use("/api/v1/menu", menuItemRouter);
 app.use("/api/v1/tables", tableRouter);
 app.use("/api/v1/reservations", reservationRouter);
 app.use("/api/v1/orders", orderRouter);
+
+// Inngest endpoint (handles scheduled + event-driven functions)
 app.use(
   "/api/inngest",
   serve({
@@ -88,20 +94,21 @@ app.use(
   }),
 );
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
   res.send("Hello from the backend!");
 });
 
-// test better-auth route
-app.get("/api/me", async (req, res) => {
+// Test better-auth route
+app.get("/api/me", async (req: Request, res: Response) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
   res.status(200).json({ session });
 });
 
-// global error handler
-app.use((err: any, req: Request, res: Response, next: any) => {
+
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
     message: err.message,
@@ -109,35 +116,35 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Database connection + server start
-// ---------------------------------------------------------------------------
-async function startServer() {
-  try {
-    // Connect to MongoDB before accepting requests
-    await prisma.$connect();
-    console.log("✅ MongoDB connected");
 
-    httpServer.listen(PORT, () => {
-      console.log(`⚡Server is running on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("❌ Failed to connect to MongoDB:", error);
-    process.exit(1);
+if (!isVercel) {
+  async function startServer() {
+    try {
+      await prisma.$connect();
+      console.log("✅ MongoDB connected");
+
+      httpServer.listen(PORT, () => {
+        console.log(`⚡Server is running on http://localhost:${PORT}`);
+      });
+    } catch (error) {
+      console.error("❌ Failed to connect to MongoDB:", error);
+      process.exit(1);
+    }
   }
+
+  async function shutdown(signal: string) {
+    console.log(`\n${signal} received. Shutting down...`);
+    httpServer.close(async () => {
+      await prisma.$disconnect();
+      console.log("🔌 MongoDB disconnected");
+      process.exit(0);
+    });
+  }
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+
+  startServer();
 }
 
-// Graceful shutdown
-async function shutdown(signal: string) {
-  console.log(`\n${signal} received. Shutting down...`);
-  httpServer.close(async () => {
-    await prisma.$disconnect();
-    console.log("🔌 MongoDB disconnected");
-    process.exit(0);
-  });
-}
-
-process.on("SIGINT", () => shutdown("SIGINT"));
-process.on("SIGTERM", () => shutdown("SIGTERM"));
-
-startServer();
+export default app;
