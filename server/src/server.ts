@@ -55,7 +55,7 @@ app.use(
   }),
 );
 app.use(
-  helmet({
+  (helmet as (options?: import("helmet").HelmetOptions) => (req: any, res: any, next: any) => void)({
     crossOriginResourcePolicy: { policy: "cross-origin" },
   }),
 );
