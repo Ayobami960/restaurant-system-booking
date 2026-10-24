@@ -74,7 +74,7 @@ export const auth = betterAuth({
   
             let totalAmount = 0;
             const orderItemsData = cartItems.map((cartItem: any) => {
-              const dbItem = dbMenuItems.find((m) => m.id === cartItem.id);
+              const dbItem = dbMenuItems.find((m: any) => m.id === cartItem.id);
               totalAmount += dbItem!.price * cartItem.quantity;
               return {
                 menuItemId: cartItem.id,
