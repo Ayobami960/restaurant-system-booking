@@ -94,8 +94,15 @@ app.use(
   }),
 );
 
-app.get("/", (_req: Request, res: Response) => {
-  res.send("Hello from the backend!");
+app.get("/health", async (_req: Request, res: Response) => {
+  try {
+    await prisma.$connect();
+    await prisma.$runCommandRaw({ ping: 1 });
+    res.json({ ok: true, database: "connected" });
+  } catch (error: any) {
+    console.error("DB health check failed:", error);
+    res.status(500).json({ ok: false, database: "failed", message: error.message });
+  }
 });
 
 // Test better-auth route
