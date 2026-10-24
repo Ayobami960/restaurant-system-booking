@@ -1,4 +1,4 @@
-import { inngest } from '.';
+import { inngest } from './index.js';
 
 import { NonRetriableError } from "inngest";
 import { getIO } from "../lib/socket.js";

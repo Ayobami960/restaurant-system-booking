@@ -94,6 +94,10 @@ app.use(
   }),
 );
 
+app.get("/version", (_req: Request, res: Response) => {
+  res.json({ commit: process.env.VERCEL_GIT_COMMIT_SHA || "not-on-vercel" });
+});
+
 app.get("/health", async (_req: Request, res: Response) => {
   try {
     await prisma.$connect();
