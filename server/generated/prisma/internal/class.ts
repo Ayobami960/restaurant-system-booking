@@ -23,7 +23,7 @@ const config: runtime.GetPrismaClientConfig = {
       "value": "prisma-client"
     },
     "output": {
-      "value": "/home/daniel/Documents/file project/RSM/server/generated/prisma",
+      "value": "/home/daniel/Documents/file project/restaurant-system-booking/server/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -37,7 +37,7 @@ const config: runtime.GetPrismaClientConfig = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/daniel/Documents/file project/RSM/server/prisma/schema.prisma",
+    "sourceFilePath": "/home/daniel/Documents/file project/restaurant-system-booking/server/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativePath": "../../prisma",
